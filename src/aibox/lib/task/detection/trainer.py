@@ -7,11 +7,11 @@ from dataclasses import dataclass
 from multiprocessing import Event
 from typing import List, Optional
 
-# import nvidia_smi
+import nvidia_smi
 import torch
 from PIL import Image
 from graphviz import Digraph
-# from pynvml import NVMLError
+from pynvml import NVMLError
 from torch import optim, Size
 from torch.optim.lr_scheduler import _LRScheduler
 from torch.optim.optimizer import Optimizer
@@ -99,14 +99,14 @@ class Trainer:
                 self.best_mean_ap = best_checkpoint.metrics.specific['aps'][0]
 
             self.profile_enabled = True
-            # try:
-            #     nvidia_smi.nvmlInit()
-            #     self.global_device_count = nvidia_smi.nvmlDeviceGetCount()  # not affected by visible devices
-            #     self.global_device_id_to_handle_dict = {i: nvidia_smi.nvmlDeviceGetHandleByIndex(i)
-            #                                             for i in range(self.global_device_count)}
-            # except NVMLError as e:
-            #     self.logger.w(f'Disable profiling due to failure of NVML initialization with reason: {str(e)}')
-            #     self.profile_enabled = False
+            try:
+                nvidia_smi.nvmlInit()
+                self.global_device_count = nvidia_smi.nvmlDeviceGetCount()  # not affected by visible devices
+                self.global_device_id_to_handle_dict = {i: nvidia_smi.nvmlDeviceGetHandleByIndex(i)
+                                                        for i in range(self.global_device_count)}
+            except NVMLError as e:
+                self.logger.w(f'Disable profiling due to failure of NVML initialization with reason: {str(e)}')
+                self.profile_enabled = False
 
         def save_model_graph(self, image_shape: Size):
             graph = Digraph()
@@ -196,12 +196,12 @@ class Trainer:
                     f'({num_samples_per_sec:.2f} samples/sec; ETA {eta:.2f} hrs)'
                 )
 
-                # if self.profile_enabled:
-                #     self.summary_writer.add_scalar('profile/num_samples_per_sec', num_samples_per_sec, global_batch)
-                #     for i, handle in self.global_device_id_to_handle_dict.items():
-                #         device_util_rates = nvidia_smi.nvmlDeviceGetUtilizationRates(handle)
-                #         self.summary_writer.add_scalar(f'profile/device_usage/{i}', device_util_rates.gpu, global_batch)
-                #         self.summary_writer.add_scalar(f'profile/device_memory/{i}', device_util_rates.memory, global_batch)
+                if self.profile_enabled:
+                    self.summary_writer.add_scalar('profile/num_samples_per_sec', num_samples_per_sec, global_batch)
+                    for i, handle in self.global_device_id_to_handle_dict.items():
+                        device_util_rates = nvidia_smi.nvmlDeviceGetUtilizationRates(handle)
+                        self.summary_writer.add_scalar(f'profile/device_usage/{i}', device_util_rates.gpu, global_batch)
+                        self.summary_writer.add_scalar(f'profile/device_memory/{i}', device_util_rates.memory, global_batch)
 
                 self.time_checkpoint = time.time()
                 self.batches_counter = 0
