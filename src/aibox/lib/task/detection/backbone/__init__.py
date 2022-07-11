@@ -30,6 +30,7 @@ class Backbone:
         RESNEST269 = 'resnest269'
         RegNet_Y_8GF = 'regnet_y_8gf'
         EFFICIENTNET_B7 = 'efficientnet_b7'
+        ConvNeXt_Base = 'convnext_base'
 
     OPTIONS = [it.value for it in Name]
 
@@ -79,6 +80,8 @@ class Backbone:
             from .regnet_y_8gf import RegNet_Y_8GF as T
         elif name == Backbone.Name.EFFICIENTNET_B7:
             from .efficientnet_b7 import EfficientNet_B7 as T
+        elif name == Backbone.Name.ConvNeXt_Base:
+            from .convnext_base import ConvNeXt_Base as T
         else:
             raise ValueError('Invalid backbone name')
         return T
