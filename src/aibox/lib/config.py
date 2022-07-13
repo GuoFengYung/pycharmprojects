@@ -262,7 +262,7 @@ class Config:
 
     def to_hyper_param_dict(self) -> Dict[str, Union[int, float, str, bool, Tensor]]:
         hyper_param_dict = {
-            'VERSION': self.VERSION,
+            # 'VERSION': self.VERSION,
             'num_workers': self.num_workers,
             'visible_devices': str(self.visible_devices),
             'needs_freeze_bn': self.needs_freeze_bn,

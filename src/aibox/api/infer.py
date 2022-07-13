@@ -43,20 +43,20 @@ def _infer(
         device_count = len(device_ids) if len(device_ids) > 0 else 1
 
     if task_name == Task.Name.CLASSIFICATION:
-        from mirle_vision.lib.task.classification.checkpoint import Checkpoint
-        from mirle_vision.lib.task.classification.model import Model
-        from mirle_vision.lib.task.classification.preprocessor import Preprocessor
-        from mirle_vision.lib.task.classification.inferer import Inferer
+        from aibox.lib.task.classification.checkpoint import Checkpoint
+        from aibox.lib.task.classification.model import Model
+        from aibox.lib.task.classification.preprocessor import Preprocessor
+        from aibox.lib.task.classification.inferer import Inferer
     elif task_name == Task.Name.DETECTION:
-        from mirle_vision.lib.task.detection.checkpoint import Checkpoint
-        from mirle_vision.lib.task.detection.model import Model
-        from mirle_vision.lib.task.detection.preprocessor import Preprocessor
-        from mirle_vision.lib.task.detection.inferer import Inferer
-    elif task_name == Task.Name.INSTANCE_SEGMENTATION:
-        from mirle_vision.lib.task.instance_segmentation.checkpoint import Checkpoint
-        from mirle_vision.lib.task.instance_segmentation.model import Model
-        from mirle_vision.lib.task.instance_segmentation.preprocessor import Preprocessor
-        from mirle_vision.lib.task.instance_segmentation.inferer import Inferer
+        from aibox.lib.task.detection.checkpoint import Checkpoint
+        from aibox.lib.task.detection.model import Model
+        from aibox.lib.task.detection.preprocessor import Preprocessor
+        from aibox.lib.task.detection.inferer import Inferer
+    # elif task_name == Task.Name.INSTANCE_SEGMENTATION:
+    #     from mirle_vision.lib.task.instance_segmentation.checkpoint import Checkpoint
+    #     from mirle_vision.lib.task.instance_segmentation.model import Model
+    #     from mirle_vision.lib.task.instance_segmentation.preprocessor import Preprocessor
+    #     from mirle_vision.lib.task.instance_segmentation.inferer import Inferer
     else:
         raise ValueError
 
